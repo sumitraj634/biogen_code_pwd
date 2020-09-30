@@ -1,0 +1,12 @@
+{
+  "db": "mongodb+srv://sumit1234:@sumit1234@cluster0-d3y9j.mongodb.net/TEST_1",
+  "devInstanceURL": "https://otmgtm-a557340-dev1.otm.us2.oraclecloud.com",
+  "testInstanceURL": "http://otmgtm643.accelalpha.com:7779",
+  "prodInstanceURL": "http://otmgtm643.accelalpha.com:7779",
+  "gtmVersion": 6.4,
+  "currentInstance": "dev",
+  "subsciption": "Item, party, transaction",
+  "isClient": true,
+  "schemaURI": "",
+  "clientToken": ""
+}

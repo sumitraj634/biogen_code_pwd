@@ -1,0 +1,15 @@
+{
+    "deno.enable": false,
+    "cSpell.ignoreWords": [
+        "all",
+        "csv",
+        "data",
+        "error",
+        "header",
+        "message",
+        "post",
+        "post message result data error csv header all row",
+        "result",
+        "row"
+    ]
+}
