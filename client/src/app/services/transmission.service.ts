@@ -165,21 +165,12 @@ export class TransmissionService {
   public getStatus = (data) => {
     return this.asyncHandler(this.httpClient.post('/api/transmission/status', data).toPromise());
   };
-  //Pwd Change Status
-  public getPwdStatus = (data) => {
-    return this.asyncHandler(this.httpClient.post('/api/transmission/Pwdstatus', data).toPromise());
-  };
-
   public getFileRawData = (data) => {
     return this.asyncHandler(this.httpClient.post('/api/transmission/filedata', data).toPromise());
   };
 
   public sendTransmission = (data) => {
     return this.asyncHandler(this.httpClient.post('/api/transmission', data).toPromise());
-  };
-  //for PasswordUpdate
-  public sendTransmissionPwd = (data) => {
-    return this.asyncHandler(this.httpClient.post('/api/transmission/pwd', data).toPromise());
   };
 
   public getSettings = () => {

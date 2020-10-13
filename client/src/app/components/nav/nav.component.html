@@ -23,15 +23,12 @@
           </h3>
         </button>
       </span>
-     
+
       <span style="margin-right: 20px"
         ><small matBadgeOverlap="false" matBadge="{{ transmissionService.userDetails.role[0] }}" matBadgeColor="warn">{{
           transmissionService.userDetails.name
         }}</small>
       </span>
-      <button (click)="changePassword()" mat-icon-button>
-        <mat-icon>vpn_key</mat-icon>
-      </button>
       <button (click)="logOut()" mat-icon-button>
         <mat-icon>exit_to_app</mat-icon>
       </button>

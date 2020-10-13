@@ -44,7 +44,7 @@ export class TransactionService implements WebWorkerInputService {
   }
   async releasedrop(event: CdkDragDrop<string[]>) {
     if (this.selfDragDrop(event)) return;
-    if (this.loader.i = true) {
+    if ((this.loader.i = true)) {
       location.reload();
     }
     const { item1, item2 } = this.swap(event);
@@ -118,7 +118,9 @@ export class TransactionService implements WebWorkerInputService {
   getViewUrl: ViewUrl = (viewURL, csvRowIndex, statusInitial) => {
     if (statusInitial !== 'P') return (viewURL = '');
     let isIdAutoGen = false;
-    let itemIDIndex = this.csvHeader.findIndex((d) => d === this.dragdropListTc[this.itemIdIndex].displayText.toUpperCase());
+    let itemIDIndex = this.csvHeader.findIndex(
+      (d) => d === this.dragdropListTc[this.itemIdIndex].displayText.toUpperCase()
+    );
     let itemDomainIndex = this.csvHeader.findIndex((d) => d === this.dragdropListTc[this.itemIdDomain].displayText);
 
     if (itemIDIndex === -1) {
@@ -136,7 +138,7 @@ export class TransactionService implements WebWorkerInputService {
     return viewURL
       .replace('GTM_OTM_OBJECT', 'GtmTransaction')
       .replace('GTM_OTM_MANAGER_LAYOUT_GID', 'GTM_TRANSACTION_VIEW')
-      .replace('GTM_OTM_FINDER_SET', 'BIIB.GTM_MSRR_TRANSACTION')
+      .replace('GTM_OTM_FINDER_SET', 'GTM_TRANSACTION')
       .replace(
         'GTM_OTM_OBJECT_GID',
         this.transmissionService.getViewLink(

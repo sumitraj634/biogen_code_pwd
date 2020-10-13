@@ -69,8 +69,4 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('token');
     window.location.href = '/';
   }
-  changePassword() {
-    window.alert('Before Changing Your Password. Please Logout from GTM application first.');
-    window.location.href = 'forget-password';
-  }
 }

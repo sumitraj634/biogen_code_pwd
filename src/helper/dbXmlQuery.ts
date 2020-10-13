@@ -53,21 +53,6 @@ export const getTransmissionStatus = (transmission, reProcess) => {
   </sql2xml>`;
 };
 
-export const getTransmissionStatusforPassword = (transmission) => {
-  return `<sql2xml>
-    <Query>
-      <RootName>
-      TRANSACTION_STATUS
-      </RootName>
-      <Statement>
-      select STATUS
-      from i_transaction
-      where I_TRANSMISSION_NO in ( '${transmission}' )
-      </Statement>
-    </Query>
-  </sql2xml>`;
-};
-
 export const validateItemAndContact = ({ items, contacts }) => {
   return `<sql2xml><Query><RootName>GTM</RootName><Statement>
   SELECT (

@@ -3,7 +3,7 @@ import multiparty from 'multiparty';
 import xlsx from 'node-xlsx';
 import { CONSTS as consts, asyncHandler, getReportUrl, getViewUrl, asyncRouteHandler, getFileData } from '../helper/other';
 import { wmServlet } from '../api/gtm';
-import { getTransmissionStatus, getAutoGenId, getTransmissionStatusforPassword } from '../helper/dbXmlQuery';
+import { getTransmissionStatus, getAutoGenId } from '../helper/dbXmlQuery';
 import { dbXml } from '../api/gtm';
 import auth from './../middleware/auth';
 import { Report } from '../models/report';
@@ -39,78 +39,6 @@ router.post(
     return res.send({ data: { ReferenceTransmissionNo: no } });
   })
 );
-router.post(
-  '/pwd',
-  [auth],
-  asyncRouteHandler(async (req, res) => {
-    const { username, password, url } = req.user;
-    let domainName = username.split('.')[0];
-    let currentUser = username.split('.')[1];
-    let finalXML = fetchXml(password, domainName, currentUser, req.body.current);
-    const { data, error } = await asyncHandler(wmServlet(url, finalXML, 'BIIB.SDHADWAL', 'Accelalpha@1'));
-    if (error) return res.status(400).send(error);
-    if (!data.includes('ReferenceTransmissionNo')) return res.status(400).send('Invalid Format');
-    const no = getTransmissionNo(data);
-    return res.send({ data: { ReferenceTransmissionNo: no } });
-  })
-);
-
-router.post(
-  '/Pwdstatus',
-  [auth],
-  asyncRouteHandler(async (req, res) => {
-    const { username, password, url } = req.user;
-    let no = req.body.TranmissionNumber;
-    const transmissionQuery = getTransmissionStatusforPassword(no);
-    const { data: gtmData1, error } = await asyncHandler(dbXml(url, transmissionQuery, 'BIIB.SDHADWAL', 'Accelalpha@1'));
-    if (error) return res.status(400).send(error);
-    const statusResponses = JSON.stringify(gtmData1.match(/<TRANSACTION_STATUS(.*?)>/g));
-    const statusString = JSON.stringify(statusResponses.match(/STATUS=\\"(.*?)\\"/));
-    const statusTry = statusString.split(',')[1];
-    const status = statusTry.split(']')[0];
-    return res.send({ data: { ReferenceTransmissionStatus: status } });
-  })
-);
-
-function fetchXml(pwd, domainName, username, updatePwd) {
-  let text =
-    '<Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">' +
-    '<TransmissionHeader></TransmissionHeader>' +
-    '<TransmissionBody><GLogXMLElement><otm:User xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4" xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">' +
-    '<otm:GlUserGid>' +
-    '<otm:Gid>' +
-    '<otm:DomainName>' +
-    domainName +
-    '</otm:DomainName>' +
-    '<otm:Xid>' +
-    username +
-    '</otm:Xid>' +
-    '</otm:Gid>' +
-    '</otm:GlUserGid>' +
-    '<otm:TransactionCode>IU</otm:TransactionCode>' +
-    '<otm:UserPassword>' +
-    '<otm:OldPassword>' +
-    '<otm:GlPassword>' +
-    '<otm:TextPassword>' +
-    pwd +
-    '</otm:TextPassword>' +
-    '</otm:GlPassword>' +
-    '</otm:OldPassword>' +
-    '<otm:NewPassword>' +
-    '<otm:GlPassword>' +
-    '<otm:TextPassword>' +
-    updatePwd +
-    '</otm:TextPassword>' +
-    '</otm:GlPassword>' +
-    '</otm:NewPassword>' +
-    '</otm:UserPassword>' +
-    '</otm:User>' +
-    '</GLogXMLElement>' +
-    '</TransmissionBody>' +
-    '</Transmission>';
-
-  return text;
-}
 
 router.post(
   '/filedata',

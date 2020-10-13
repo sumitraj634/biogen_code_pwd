@@ -14,8 +14,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { LoginComponent } from './components/login/login.component';
-import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -24,7 +22,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'dashboard',
@@ -32,132 +30,122 @@ const routes: Routes = [
         data: {
           title: 'Dashboard',
           preload: true,
-          delay: false
+          delay: false,
         },
         canActivateChild: [AuthGuard],
-        resolve: { data: DashboardResolverService }
-      },
-      {
-        path:'forget-password',
-        component: ForgetPasswordComponent,
-        data: {
-          title: 'ChangePassword',
-          preload: true,
-          delay: false
-        }
-
+        resolve: { data: DashboardResolverService },
       },
       {
         path: 'item',
-        loadChildren: () => import('./modules/item/item.module').then(m => m.ItemModule),
+        loadChildren: () => import('./modules/item/item.module').then((m) => m.ItemModule),
         resolve: { data: ItemResolverService },
         data: {
           title: 'Item',
           preload: true,
-          delay: false
+          delay: false,
         },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'bom',
-        loadChildren: () => import('./modules/bom/bom.module').then(m => m.BomModule),
+        loadChildren: () => import('./modules/bom/bom.module').then((m) => m.BomModule),
         data: {
           title: 'Bom',
           preload: true,
-          delay: true
+          delay: true,
         },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'party',
-        loadChildren: () => import('./modules/party/party.module').then(m => m.PartyModule),
+        loadChildren: () => import('./modules/party/party.module').then((m) => m.PartyModule),
         resolve: { data: PartyResolverService },
         data: {
           title: 'Party',
           preload: true,
-          delay: true
+          delay: true,
         },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'location',
-        loadChildren: () => import('./modules/location/location.module').then(m => m.LocationModule),
+        loadChildren: () => import('./modules/location/location.module').then((m) => m.LocationModule),
         resolve: { data: LocationResolverService },
         data: {
           title: 'Location',
           preload: true,
-          delay: true
+          delay: true,
         },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'transaction',
-        loadChildren: () => import('./modules/transaction/transaction.module').then(m => m.TransactionModule),
+        loadChildren: () => import('./modules/transaction/transaction.module').then((m) => m.TransactionModule),
         data: {
           title: 'Transaction',
           preload: true,
-          delay: true
+          delay: true,
         },
         resolve: { data: TransactionResolverService },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'order-release',
-        loadChildren: () => import('./modules/order-release/order-release.module').then(m => m.OrderReleaseModule),
+        loadChildren: () => import('./modules/order-release/order-release.module').then((m) => m.OrderReleaseModule),
         data: {
           title: 'Order-Release',
           preload: true,
-          delay: true
+          delay: true,
         },
         resolve: { data: OrderReleaseResolverService },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'order-base',
-        loadChildren: () => import('./modules/order-base/order-base.module').then(m => m.OrderBaseModule),
+        loadChildren: () => import('./modules/order-base/order-base.module').then((m) => m.OrderBaseModule),
         data: {
           title: 'Order-Base',
           preload: true,
-          delay: true
+          delay: true,
         },
         resolve: { data: OrderBaseResolverService },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'shipment',
-        loadChildren: () => import('./modules/shipment/shipment.module').then(m => m.ShipmentModule),
+        loadChildren: () => import('./modules/shipment/shipment.module').then((m) => m.ShipmentModule),
         data: {
           title: 'Shipment',
           preload: true,
-          delay: true
+          delay: true,
         },
         resolve: { data: ShipmentResolverService },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'tracking-event',
-        loadChildren: () => import('./modules/tracking-event/tracking-event.module').then(m => m.TrackingEventModule),
+        loadChildren: () => import('./modules/tracking-event/tracking-event.module').then((m) => m.TrackingEventModule),
         resolve: { data: TrackingEventResolverService },
         data: {
           title: 'Tracking-Event',
           preload: true,
-          delay: true
+          delay: true,
         },
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
       },
       {
         path: 'admin',
-        loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
+        loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
         data: {
           title: 'Admin',
           preload: true,
-          delay: true
+          delay: true,
         },
-        canActivateChild: [AuthGuard, AdminGuard]
-      }
+        canActivateChild: [AuthGuard, AdminGuard],
+      },
     ],
     data: { title: 'Dengine' },
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
 
   {
@@ -165,19 +153,19 @@ const routes: Routes = [
     component: LoginComponent,
     data: { title: 'Dengine | Login' },
     canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard]
+    canActivateChild: [AuthGuard],
   },
 
   {
     path: '**',
     redirectTo: '/item',
     pathMatch: 'full',
-    canActivate: [AuthGuard]
-  }
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: NoPreloading })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

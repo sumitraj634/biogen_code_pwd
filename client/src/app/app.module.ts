@@ -8,13 +8,19 @@ import { NavComponent } from './components/nav/nav.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SharedModule } from './modules/shared.module';
-import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
-  declarations: [AppComponent, NavComponent, LoginComponent, DashboardComponent, ForgetPasswordComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, SharedModule, SharedModule.forRoot(),
-    FormsModule,ReactiveFormsModule],
+  declarations: [AppComponent, NavComponent, LoginComponent, DashboardComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    SharedModule,
+    SharedModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

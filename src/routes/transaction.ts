@@ -22,6 +22,7 @@ router.get(
     }
     const gtmVersion = getGtmVersion(req);
     let schemaTransaction = await getTransactionSchema(gtmVersion);
+    password;
     if (!schemaTransaction) schemaTransaction = await generateTrxSchema();
     const { data: gtmData, error } = await asyncHandler(dbXml(url, getTransactionPropsfromGtm, username, password));
     if (error) return res.status(400).send(error);
@@ -60,17 +61,15 @@ router.put(
 
     trxs[0] = await TrxModel(domain, instance).findByIdAndUpdate({ _id: trxs[0]._id }, trxs[0], { new: true }).exec();
     trxs[1] = await TrxModel(domain, instance).findByIdAndUpdate({ _id: trxs[1]._id }, trxs[1], { new: true }).exec();
-    let x=await TrxModel(domain, instance).find({ name: trxs[1].name });
-    let y=await TrxModel(domain, instance).find({ name: trxs[0].name });
- 
-    if(x.length>1)
-    {
-      await TrxModel(domain, instance).findByIdAndDelete({ _id:x[1]._id }).exec();
+    let x = await TrxModel(domain, instance).find({ name: trxs[1].name });
+    let y = await TrxModel(domain, instance).find({ name: trxs[0].name });
+
+    if (x.length > 1) {
+      await TrxModel(domain, instance).findByIdAndDelete({ _id: x[1]._id }).exec();
     }
- 
-    if(y.length>1)
-    {
-      await TrxModel(domain, instance).findByIdAndDelete({ _id:y[1]._id }).exec();
+
+    if (y.length > 1) {
+      await TrxModel(domain, instance).findByIdAndDelete({ _id: y[1]._id }).exec();
     }
     return res.status(200).json({ data: trxs });
   })

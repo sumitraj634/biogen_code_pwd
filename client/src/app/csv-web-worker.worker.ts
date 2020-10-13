@@ -1,4 +1,3 @@
-
 import { WebWorkerInput } from './model/WebWorkerInput';
 
 const autoGenFields = ['TransactionCode', 'DomainName'];
@@ -85,7 +84,7 @@ addEventListener('message', async (msg) => {
     lineIdentifierPathString,
     validationData
   );
-    postMessage({
+  postMessage({
     result: result.data,
     error: result.error,
     csvHeader: result.csvHeader,
@@ -161,7 +160,6 @@ function loopAndMergeLines(
   }
 }
 
-
 function mergingRequired(currentRow: any, nextRow: any, parentGidIdentifierPathString, lineIdentifierPathString) {
   const pattern = getRexPatternForTrxAndLineIds(parentGidIdentifierPathString, lineIdentifierPathString);
 
@@ -170,7 +168,7 @@ function mergingRequired(currentRow: any, nextRow: any, parentGidIdentifierPathS
       // if not biogen comment below condition
 
       if (key.match(pattern)) {
-              continue;
+        continue;
       }
       const current = currentRow[key];
       const next = nextRow[key];
@@ -285,35 +283,30 @@ function getValidatedObjPathValue(
   if (invalidIncoterm(csvHeader, csvHeaderCounter, validationData, cellValue)) {
     response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
     // not biogen -> comment out below start
-  }
-  else if (invalidLineIncoterm(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+  } else if (invalidLineIncoterm(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidShippingCondition(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidLineUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidCurrencyCode(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidLineCurrencyCode(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidPartyCountryCode(csvHeaderPaths, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidPartyCountry(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidSpecialHandling(csvHeader, csvHeaderCounter, validationData, cellValue)) {
     response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
   }
-  else if (invalidShippingCondition(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidLineUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidCurrencyCode(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidLineCurrencyCode(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidPartyCountryCode(csvHeaderPaths, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidPartyCountry(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-  else if (invalidSpecialHandling(csvHeader, csvHeaderCounter, validationData, cellValue)) {
-    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
-  }
-   else {
+  //for Qty Qualifier Net Weight
+  // else if (invalidNetWeightUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+  //   response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  // }
+  else {
     pathCollector[csvHeaderPaths[csvHeaderCounter]] = cellValue;
   }
 }
@@ -335,7 +328,6 @@ function invalidPartyCountry(csvHeader: any[], csvHeaderCounter: number, validat
   );
 }
 
-
 function invalidShippingCondition(csvHeader: any[], csvHeaderCounter: number, validationData: any, cellValue: any) {
   return (
     csvHeader[csvHeaderCounter] === 'Shipping Condition' &&
@@ -356,6 +348,33 @@ function invalidUOM(csvHeader: any[], csvHeaderCounter: number, validationData: 
 function invalidLineUOM(csvHeader: any[], csvHeaderCounter: number, validationData: any, cellValue: any) {
   return (
     csvHeader[csvHeaderCounter] === 'Line UOM' &&
+    !isEmpty(validationData.transaction) &&
+    !isEmpty(validationData.transaction.quantity) &&
+    !validationData.transaction.quantity[cellValue]
+  );
+}
+//for Qty Qualifier Net Weight
+
+function invalidNetWeightUOM(csvHeader: any[], csvHeaderCounter: number, validationData: any, cellValue: any) {
+  // console.log('check');
+  // console.log(csvHeader);
+  // console.log(csvHeaderCounter);
+  // console.log(csvHeader[csvHeaderCounter]);
+  // console.log('Validation Data');
+  // console.log(validationData);
+  // console.log('*******');
+  // console.log('End');
+
+  return (
+    csvHeader[csvHeaderCounter] === 'Line Uom Net Weight' &&
+    !isEmpty(validationData.transaction) &&
+    !isEmpty(validationData.transaction.quantity) &&
+    !validationData.transaction.quantity[cellValue]
+  );
+}
+function invalidGrossWeightUOM(csvHeader: any[], csvHeaderCounter: number, validationData: any, cellValue: any) {
+  return (
+    csvHeader[csvHeaderCounter] === 'Line Uom Gross Weight' &&
     !isEmpty(validationData.transaction) &&
     !isEmpty(validationData.transaction.quantity) &&
     !validationData.transaction.quantity[cellValue]
@@ -520,7 +539,12 @@ function getValidatedObjAttributePathValue(
   } else if (invalidCooRemark(csvHeader, csvHeaderCounter, validationData, cellValue)) {
     response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
   }
-   else if (invalidCooSubstance(csvHeader, csvHeaderCounter)) {
+  //for Net Weight UOM
+  else if (invalidNetWeightUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidGrossWeightUOM(csvHeader, csvHeaderCounter, validationData, cellValue)) {
+    response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
+  } else if (invalidCooSubstance(csvHeader, csvHeaderCounter)) {
     if (!validationData.item.country[cellValue])
       response.error.push(commonErrorMessage(cellValue, csvHeader, csvHeaderCounter, rowIndex));
     else pathCollector[propPath.path] = validationData.item.country[cellValue];

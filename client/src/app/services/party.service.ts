@@ -83,7 +83,9 @@ export class PartyService implements WebWorkerInputService {
   getViewUrl: ViewUrl = (viewURL, csvRowIndex, statusInitial) => {
     if (statusInitial !== 'P') return (viewURL = '');
     let isIdAutoGen = false;
-    let partyIDIndex = this.csvHeader.findIndex((d) => d === this.dragdropListTc[this.itemIdIndex].displayText.toUpperCase());
+    let partyIDIndex = this.csvHeader.findIndex(
+      (d) => d === this.dragdropListTc[this.itemIdIndex].displayText.toUpperCase()
+    );
     let partyDomainIndex = this.csvHeader.findIndex((d) => d === this.dragdropListTc[this.itemIdDomain].displayText);
 
     if (partyIDIndex === -1) {
